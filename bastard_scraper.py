@@ -61,6 +61,16 @@ for i in count():
     # TODO: perhaps delete them? or delete every link except the vote link using jaccard
     for anchor in story.find_all('a'):
         anchor['href'] = ""
+        
+    # add better paragraph breaks 
+    for para in story.find_all('hr'):
+        para.name = "p"
+        para.string = "***"
+        
+    # add title back to text 
+    new_tag = soup.new_tag('strong')
+    new_tag.string = soup.title.get_text()
+    story.insert(0, new_tag)
 
     # figure out if the link we've selected with story.a[1] is in fact a "Next Chapter" link
     # by comparing its jaccard index to that of a template link
