@@ -62,11 +62,6 @@ for i in count():
     for anchor in story.find_all('a'):
         anchor['href'] = ""
 
-    # add better paragraph breaks
-    for para in story.find_all('hr'):
-        para.name = "p"
-        para.string = "***"
-
     # add title back to text
     new_tag = soup.new_tag('strong')
     new_tag.string = soup.title.get_text()
