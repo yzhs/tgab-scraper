@@ -45,7 +45,7 @@ for i in count():
     except HTTPError as err:
         print(err)
         break
-    
+
     # story is everything inside the first div.entry-content we find
     story = soup.find('div', {'class': 'entry-content'})
 
@@ -56,18 +56,18 @@ for i in count():
     # the next link we follow is the second one on the page,
     # unless it is too dissimilar from "Next Chapter &gt;"
     next_url, next_link = story.find_all('a')[1]['href'], story.find_all('a')[1].get_text()
-    
+
     # make all the links point to nowhere
     # TODO: perhaps delete them? or delete every link except the vote link using jaccard
     for anchor in story.find_all('a'):
         anchor['href'] = ""
-        
-    # add better paragraph breaks 
+
+    # add better paragraph breaks
     for para in story.find_all('hr'):
         para.name = "p"
         para.string = "***"
-        
-    # add title back to text 
+
+    # add title back to text
     new_tag = soup.new_tag('strong')
     new_tag.string = soup.title.get_text()
     story.insert(0, new_tag)
