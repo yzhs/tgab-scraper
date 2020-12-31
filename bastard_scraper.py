@@ -67,6 +67,10 @@ for i in count():
     new_tag.string = soup.title.get_text().replace(' | The Gods are Bastards', '')
     story.insert(0, new_tag)
 
+    paragraphs = story.find_all('p')
+    paragraphs[0].decompose()
+    paragraphs[-1].decompose()
+
     # figure out if the link we've selected with story.a[1] is in fact a "Next Chapter" link
     # by comparing its jaccard index to that of a template link
     jaccard_index = jaccard("Next Chapter &gt;".split(), next_link.split())
