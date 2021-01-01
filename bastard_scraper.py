@@ -28,7 +28,7 @@ def get_final_size():
     return round(sum(sizes) / 1_000_000, 2)
 
 
-def download_chapter(i, current):
+def download_chapter(i: int, current: str) -> (BeautifulSoup, str):
     with urllib.request.urlopen(current) as response:
         if response.code != 200:
             return None, None
