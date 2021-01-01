@@ -29,20 +29,26 @@ def get_final_size():
     return round(sum(sizes) / 1_000_000, 2)
 
 
+def download_chapter(i, current):
+    with urllib.request.urlopen(current) as response:
+        if response.code != 200:
+            return None, None
+        first_chapter = response.read()
+        soup = BeautifulSoup(first_chapter, features="html.parser")
+        title = soup.title.get_text()
+        # Write ingest result to file
+        if keep_ingested:
+            with open(f'{os.getcwd()}/input/[{i + 1:03}] {title}.html', 'w') as out:
+                out.write(soup.prettify(formatter='html5'))
+    return soup, title
+
 # Page Gathering:
 for i in count():
     # Try to open the URL provided, break on errors like a 404, etc.
     try:
-        with urllib.request.urlopen(current) as response:
-            if response.code != 200:
-                break
-            first_chapter = response.read()
-            soup = BeautifulSoup(first_chapter, features="html.parser")
-            title = soup.title.get_text()
-            # Write ingest result to file
-            if keep_ingested:
-                with open(f'{os.getcwd()}/input/[{i + 1:03}] {title}.html', 'w') as out:
-                    out.write(soup.prettify(formatter='html5'))
+        soup, title = download_chapter(i, current)
+        if not soup:
+            break
     except HTTPError as err:
         print(err)
         break
