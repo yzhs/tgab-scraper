@@ -46,6 +46,10 @@ def add_title_heading(story: BeautifulSoup):
     new_tag.string = soup.title.get_text().replace(' | The Gods are Bastards', '')
     story.insert(0, new_tag)
 
+def make_top_level_tag_body(story: BeautifulSoup):
+    story.name = "body"
+    del story['class']
+
 # Page Gathering:
 for i in count():
     # Try to open the URL provided, break on errors like a 404, etc.
@@ -74,6 +78,7 @@ for i in count():
         anchor['href'] = ""
 
     add_title_heading(story)
+    make_top_level_tag_body(story)
 
     paragraphs = story.find_all('p')
     paragraphs[0].decompose()
