@@ -41,6 +41,11 @@ def download_chapter(i: int, current: str) -> (BeautifulSoup, str):
                 out.write(soup.prettify(formatter='html5'))
     return soup, title
 
+def add_title_heading(story: BeautifulSoup):
+    new_tag = soup.new_tag('h1')
+    new_tag.string = soup.title.get_text().replace(' | The Gods are Bastards', '')
+    story.insert(0, new_tag)
+
 # Page Gathering:
 for i in count():
     # Try to open the URL provided, break on errors like a 404, etc.
@@ -68,10 +73,7 @@ for i in count():
     for anchor in story.find_all('a'):
         anchor['href'] = ""
 
-    # add title back to text
-    new_tag = soup.new_tag('h1')
-    new_tag.string = soup.title.get_text().replace(' | The Gods are Bastards', '')
-    story.insert(0, new_tag)
+    add_title_heading(story)
 
     paragraphs = story.find_all('p')
     paragraphs[0].decompose()
