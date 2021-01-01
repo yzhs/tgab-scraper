@@ -17,7 +17,6 @@ keep_ingested = False
 # start from the beginning
 start_url = 'https://tiraas.wordpress.com/2014/08/22/1-1/'
 current = urllib.request.Request(start_url)
-_break = False # for ugly unrefactored code reasons, we can't just break when we want to. hence, _break
 
 def get_final_size():
     """
@@ -78,6 +77,10 @@ for i in count():
     paragraphs[0].decompose()
     paragraphs[-1].decompose()
 
+    # write result to file
+    with open(f'{os.getcwd()}/[{i + 1:03}] {title}.html', 'w') as out:
+        out.write(story.prettify(formatter='html5'))
+
     # figure out if the link we've selected with story.a[1] is in fact a "Next Chapter" link
     # by comparing its jaccard index to that of a template link
     jaccard_index = jaccard("Next Chapter &gt;".split(), next_link.split())
@@ -90,11 +93,5 @@ Scraping ended at {current}.
 Reason: "Next Chapter" link too dissimilar from template.
 Jaccard index of "{"Next Chapter &gt;"}" and "{next_link}" = {jaccard_index}
 Scraped {i + 1} pages, totalling {get_final_size()} MB.""")
-        _break = True
-
-    # write result to file
-    with open(f'{os.getcwd()}/[{i + 1:03}] {title}.html', 'w') as out:
-        out.write(story.prettify(formatter='html5'))
-
-    if _break: break
+        break
 
