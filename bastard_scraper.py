@@ -15,7 +15,8 @@ around 136MB of HTML is downloaded, and ~20MB of sanitized HTML is emitted.
 keep_ingested = False
 
 # start from the beginning
-current = urllib.request.Request('https://tiraas.wordpress.com/2014/08/22/1-1/')
+start_url = 'https://tiraas.wordpress.com/2014/08/22/1-1/'
+current = urllib.request.Request(start_url)
 _break = False # for ugly unrefactored code reasons, we can't just break when we want to. hence, _break
 
 def get_final_size():
