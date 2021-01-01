@@ -86,7 +86,16 @@ for i in count():
 
     # write result to file
     with open(f'{os.getcwd()}/[{i + 1:03}] {title}.html', 'w') as out:
+        out.write(f"""<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" epub:prefix="z3998: http://www.daisy.org/z3998/2012/vocab/structure/#" lang="en-US" xml:lang="en-US">
+  <head>
+    <title>{title}</title>
+    <link href="style/main.css" rel="stylesheet" type="text/css"/>
+  </head>
+""")
         out.write(story.prettify(formatter='html5'))
+        out.write("</html>\n")
 
     # figure out if the link we've selected with story.a[1] is in fact a "Next Chapter" link
     # by comparing its jaccard index to that of a template link
@@ -101,4 +110,3 @@ Reason: "Next Chapter" link too dissimilar from template.
 Jaccard index of "{"Next Chapter &gt;"}" and "{next_link}" = {jaccard_index}
 Scraped {i + 1} pages, totalling {get_final_size()} MB.""")
         break
-
